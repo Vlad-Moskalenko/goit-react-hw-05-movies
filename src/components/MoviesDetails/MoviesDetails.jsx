@@ -1,10 +1,12 @@
-import { useParams, Outlet, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useParams, Outlet, Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, Suspense } from 'react';
 
 import getMovies from 'components/api/api';
 
 export default function MoviesDetails() {
   const { movieId } = useParams();
+  const location = useLocation();
+  const backLinkHref = location.state?.from ?? '/';
 
   const [movieDetails, setMovieDetails] = useState({});
 
@@ -17,7 +19,7 @@ export default function MoviesDetails() {
   return (
     <div>
       <p>
-        <Link to="/">Go Back</Link>
+        <Link to={backLinkHref}>Go Back</Link>
       </p>
 
       <img
@@ -44,7 +46,9 @@ export default function MoviesDetails() {
           <Link to="reviews">Reviews</Link>
         </li>
       </ul>
-      <Outlet />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 }

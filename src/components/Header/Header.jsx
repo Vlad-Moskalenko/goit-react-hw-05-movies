@@ -1,4 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
+import { Suspense } from 'react';
 
 export default function Header() {
   return (
@@ -9,7 +10,9 @@ export default function Header() {
           <Link to="/movies">Movies</Link>
         </nav>
       </header>
-      <Outlet />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
     </>
   );
 }
